@@ -2,7 +2,7 @@ extern crate sdl2;
 
 use sdl2::event::Event;
 use sdl2::keyboard::Keycode;
-use sdl2::pixels::Color;
+// use sdl2::pixels::Color;
 use std::time::Duration;
 
 // use sdl2::rect::Rect;
@@ -11,12 +11,11 @@ use std::time::Duration;
 // use sdl2::keyboard::KeyboardState;
 // use sdl2::keyboard::Scancode;
 
-use crate::module::game_object::GameObject;
+use crate::module::game_object::{GameObject, CharacterAttribute};
+use crate::module::const_values::*;
 
 mod module;
 
-const WINDOW_WIDTH: u32 = 800;
-const WINDOW_HEIGHT: u32 = 600;
 
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
@@ -32,14 +31,11 @@ pub fn main() -> Result<(), String> {
 
     let mut event_pump = sdl_context.event_pump()?;
 
-    let mut bar_1 = GameObject::new(250, 30, 20, 100, 0, 5);
+    let mut bar_1 = GameObject::new(250, 30                        , 20, 100, 0, 5, CharacterAttribute::Player1);
 
-    let mut bar_2 = GameObject::new(250, (WINDOW_WIDTH as i32) - 50, 20, 100, 0, 5);
+    let mut bar_2 = GameObject::new(250, (WINDOW_WIDTH as i32) - 50, 20, 100, 0, 5, CharacterAttribute::Player2);
 
-    let mut ball = GameObject::new(250, 400, 20, 20, 2, 2);
-
-    //let (mut x, mut y) = (30, 250);
-    // let (mut x, mut y) = (0, 0);
+    let mut ball = GameObject::new(250, 400                        , 20, 20, 4, 4, CharacterAttribute::NPC);
 
     'running: loop {
         for event in event_pump.poll_iter(){
@@ -55,20 +51,22 @@ pub fn main() -> Result<(), String> {
 
         let state = event_pump.keyboard_state();
 
-        bar_1.control_p1(&state);
-        bar_2.control_p2(&state);
+        bar_1.control(&state);
+        bar_2.control(&state);
 
         bar_1.speed_boost_p1(&state, 10);
         bar_2.speed_boost_p2(&state, 10);
 
-        ball.bounce(&bar_1, &bar_2);
+        ball.bounce(&bar_1, &bar_2, &state);
         ball.goal_sequence();
         ball.auto_move();
 
-        canvas.set_draw_color(Color::RGB(0, 0, 0));
+        canvas.set_draw_color(BLACK);
         canvas.clear();
 
-        canvas.set_draw_color(Color::RGB(255, 255, 255));
+        canvas.set_draw_color(WHITE);
+
+        //pause_game(&state);
 
 
         bar_1.fill_rect_object(&mut canvas)?;
@@ -82,3 +80,14 @@ pub fn main() -> Result<(), String> {
 
     Ok(())
 }
+
+// fn pause_game(state: &KeyboardState<'_>){
+//     if(state.is_scancode_pressed(Scancode::Space)){
+//         while state.is_scancode_pressed(Scancode::Space) {}
+//         while !state.is_scancode_pressed(Scancode::Space) {
+//             std::thread::sleep(Duration::from_secs(1u64));
+//         }
+
+        
+//     }
+// }
