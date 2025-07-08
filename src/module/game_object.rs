@@ -40,24 +40,6 @@ impl GameObject {
                caracter_attibute: caracter_attribute}
     }
 
-    // pub fn control_p2 (&mut self, state: &KeyboardState<'_>) {
-    //     if state.is_scancode_pressed(Scancode::Up){
-    //         if self.vertical > 0 {self.vertical -= 5;}
-    //     }
-
-    //     if state.is_scancode_pressed(Scancode::Down){
-    //         if self.vertical < ((WINDOW_HEIGHT - self.height) as i32) {self.vertical += 5;}
-    //     }
-
-    //     if state.is_scancode_pressed(Scancode::Left){
-    //         self.horizontal -= self.x_velocity;
-    //     }
-
-    //     if state.is_scancode_pressed(Scancode::Right){
-    //         self.horizontal += self.x_velocity;
-    //     }
-    // }
-
     pub fn control (&mut self, state: &KeyboardState<'_>) {
         if self.caracter_attibute == CharacterAttribute::Player1{
             if state.is_scancode_pressed(Scancode::W){
