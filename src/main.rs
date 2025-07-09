@@ -1,9 +1,12 @@
 extern crate sdl2;
 
 use sdl2::event::Event;
+use sdl2::image::LoadTexture;
 use sdl2::keyboard::Keycode;
+use std::path::Path;
 // use sdl2::pixels::Color;
 use std::time::Duration;
+use sdl2::ttf::*;
 
 // use sdl2::rect::Rect;
 // use sdl2::render::Canvas;
@@ -16,10 +19,23 @@ use crate::module::const_values::*;
 
 mod module;
 
+const TITLE: &str = "src/assets/image";
+const FONT: &str = "src/assets/fonts";
+
+
+
 
 pub fn main() -> Result<(), String> {
     let sdl_context = sdl2::init()?;
     let video_subsystem = sdl_context.video()?;
+
+    // let ttf_context = sdl2::ttf::init().map_err(|e| e.to_string())?;
+    // let font = ttf_context.load_font(FONT, 20)?;
+    // let font_surface = font
+    //     .render("ABC")
+    //     .blended(WHITE)
+    //     .map_err(|e| e.to_string())?;
+    
 
     let window = video_subsystem
         .window("Rust-SDL2", WINDOW_WIDTH, WINDOW_HEIGHT)
@@ -28,6 +44,11 @@ pub fn main() -> Result<(), String> {
         .build()
         .map_err(|e| e.to_string())?;
     let mut canvas = window.into_canvas().build().map_err(|e| e.to_string())?;
+
+    // let text_creator = canvas.texture_creator();
+    //let img = Path::new(TITLE);
+    //let font = ttf_context.load_font(FONT, 20)?;
+
 
     let mut event_pump = sdl_context.event_pump()?;
 

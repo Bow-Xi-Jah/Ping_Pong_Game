@@ -1,4 +1,4 @@
-use::sdl2::pixels::Color;
+use sdl2::pixels::Color;
 
 pub const BLACK: Color = Color{r:0  , b:0  , g:0  , a:0xff, };
 pub const WHITE: Color = Color{r:255, b:255, g:255, a:0xff, };
