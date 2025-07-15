@@ -167,6 +167,10 @@ impl GameObject {
         }
     }
 
+    pub fn power_attack(&self, state: &KeyboardState<'_>){
+        //TODO
+    }
+
     pub fn fill_rect_object(&self, canvas: &mut Canvas<Window>) -> Result<(), String>{
         canvas.fill_rect(Rect::new(self.horizontal, self.vertical, self.width, self.height))?;
         Ok(())

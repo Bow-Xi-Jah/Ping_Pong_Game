@@ -4,7 +4,7 @@ version = "0.1.0"
 edition = "2024"
 
 [dependencies]
-
+debounce = "0.2"
 
 [dependencies.sdl2]
 version = "0.35"
