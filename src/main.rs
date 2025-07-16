@@ -43,19 +43,20 @@ pub fn main() -> Result<(), String> {
     let ttf_context = ttf::init().map_err(|e| e.to_string())?;
 
 
-    let delay = Duration::from_millis(10);
+    //let delay = Duration::from_millis(10);
     // let debouncer = EventDebouncer::new(delay, move |data: String| {
     //     println!("{}", data);
     // });
-    let debouncer = EventDebouncer::new(delay, |mut game_state: GameState|{
+    let debouncer = EventDebouncer::new(DELAY, |mut game_state: GameState|{
         game_state.pause();
     });
 
+    let debouncer2 = EventDebouncer::new(DELAY, |data:String| {
+        print!("{} ", data);
+    });
 
-    // debouncer.put(String::from("foo"));
-    // debouncer.put(String::from("foo"));
-    // debouncer.put(String::from("bar"));
-    std::thread::sleep(delay);
+
+    
 
 
     // let font = ttf_context.load_font(FONT, 20)?;
@@ -102,6 +103,7 @@ pub fn main() -> Result<(), String> {
 
     let mut ball = GameObject::new(250, 400                        , 20, 20, 4, 4, CharacterAttribute::NPC);
 
+    let mut prev_p_pressed = false;
     'running: loop {
         for event in event_pump.poll_iter(){
             match event {
@@ -115,27 +117,15 @@ pub fn main() -> Result<(), String> {
         }
 
         let state = event_pump.keyboard_state();
+        let p_pressed = state.is_scancode_pressed(Scancode::P);
 
-        // let closure = |mut current_state: GameState|{
-        //     current_state.pause(&state);
-        // };
-
-        // if state.is_scancode_pressed(Scancode::P) {
-        //     if currentState == GameState::GAME_RUNNING {
-        //         currentState = GameState::GAME_PAUSED;
-        //     }
-        //     else if currentState == GameState::GAME_PAUSED {
-        //         currentState = GameState::GAME_RUNNING;
-        //     }
-
-        // }
-
-        //let debouncer = EventDebouncer::new(delay, closure);
-
-        if state.is_scancode_pressed(Scancode::P) {
+        // Pキーが押された瞬間だけ実行
+        if p_pressed && !prev_p_pressed {
             current_state.pause();
             //debouncer.put(current_state);
+            //print!("P_key_pressed");
         }
+        prev_p_pressed = p_pressed;
 
         if current_state == GameState::GAME_RUNNING {
             bar_1.control(&state);
@@ -186,14 +176,5 @@ pub fn main() -> Result<(), String> {
 }
 
 
-// fn pause (currentState:&mut GameState, state: &KeyboardState<'_>){
-//     if state.is_scancode_pressed(Scancode::P) {
-//         if *currentState == GameState::GAME_RUNNING {
-//             *currentState = GameState::GAME_PAUSED;
-//         }
-//         else if *currentState == GameState::GAME_PAUSED {
-//             *currentState = GameState::GAME_RUNNING;
-//         }
-//     }
-// }
+
 
